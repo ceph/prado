@@ -25,3 +25,60 @@ that host to register as a Jenkins slave, saving the administrator from the
 hassle to go through Jenkins's UI. As soon as the host was ready, Jenkins was
 able to start sending jobs to it as a valid slave with executors ready to do
 work.
+
+
+configuring playbooks
+=====================
+Map configured named playbooks to actual requests so that builds can
+specify via this endpoint what is it that they need.
+
+For example, a build for a Jenkins slave might look like this in a Pecan
+config::
+
+    build_map = {
+        "slave": {
+            "playbook": "%(confdir)s/public/ceph-build/ansible/slaves",
+            "template": "%(confdir)s/public/ceph-build/ansible/slaves/slave.yml.j2",
+            "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
+        }
+    }
+
+Which would be reachable at::
+
+    public/slave/
+
+And all query args would be passed onto the template file.
+
+templating
+----------
+To avoid collition with Ansible's support for Jinja2, templates for playbooks
+use Mako (http://www.makotemplates.org/).
+
+A simple debug message in a playbook template that looks like::
+
+    - debug: msg="this is a message where ${foo} and ${meh} should be defined"
+
+Would get rendered and ready to execute when passing the variables to the
+configured endpoint (using 'slave' here as an example)::
+
+    http://0.0.0.0:8000/setup/slave/?foo=1&meh=2
+
+Output of the playbook would show::
+
+    TASK: [debug msg="this is a message where 1 and 2 should be defined"] *******
+
+command
+-------
+When defining commands, since ansible would be running to the local host it is
+recommended to use ``-i "localhost," -c local`` to ensure that ansible will use
+local connections and run on localhost only.
+
+In the example command a ``main.yml`` file is used::
+
+    "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
+
+This is a convention where templates get renamed to ``main.yml`` and added to
+the top level of the compressed directory so that the script has a reliable way
+to look for it. Since the script also changes directories to where the playbook
+files are, that means that the ``main.yml`` file will always need to be reached
+on the parent directory.
