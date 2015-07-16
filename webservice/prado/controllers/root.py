@@ -1,6 +1,6 @@
 from pecan import expose, redirect
 from prado.controllers.setup import SetupController
-from prado.controllers.build import BuildController
+from prado.controllers.build import BuildsController
 
 
 class RootController(object):
@@ -10,4 +10,4 @@ class RootController(object):
         return dict()
 
     setup = SetupController()
-    build = BuildController()
+    build = BuildsController()
