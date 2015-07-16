@@ -1,6 +1,6 @@
 # Server Specific Configurations
 server = {
-    'port': '8000',
+    'port': '8080',
     'host': '0.0.0.0'
 }
 
@@ -11,10 +11,6 @@ app = {
     'static_root': '%(confdir)s/public',
     'template_path': '%(confdir)s/prado/templates',
     'debug': True,
-    'errors': {
-        404: '/error/404',
-        '__force_dict__': True
-    }
 }
 
 logging = {
@@ -47,14 +43,18 @@ logging = {
 }
 
 
-setup_script = '%(confdir)s/public/setup.sh'
 setup_ansible = '%(confdir)s/public/ansible.tar.gz'
-playbook = '%(confdir)s/public/playbook.tar.gz'
 
+build_map = {
+# a build_map entry defines what is available to be served, it is required that each
+# playbook has an entry here defining the commands needed to run
+#    "slave": {
+#        "playbook": "%(confdir)s/public/ceph-build/ansible/slaves",
+#        "template": "%(confdir)s/public/ceph-build/ansible/slaves/slave.yml.j2",
+#        "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
+#    }
+}
 
-# Custom Configurations must be in Python dictionary format::
-#
-# foo = {'bar':'baz'}
-#
-# All configurations are accessible at::
-# pecan.conf
+# if we are getting proxied by say, NGINX we can't use the server port and
+# address for the app itself so this needs to be defined again here
+service_address = 'http://localhost:8080'
