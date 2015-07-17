@@ -2,7 +2,21 @@
 ==========
 Is a web service that provides a full installation of Ansible over HTTP with
 the ability to understand query arguments as playbook variables so that the
-playbook to be served will be exactly what a host needs.
+playbook to be served will be exactly what a host needs when executing.
+
+An example call to the webservice by the host would look like::
+
+    curl -L http://prado.example/setup/myplaybook/ | bash
+
+project name
+------------
+Usually, running curl from some url and executing the contents with a shell is
+frowned upon. Especially when it is across the internet. This is meant to be run
+within a protected environment *without* being exposed to the internet.
+
+The name was chosen in honor of Don Damaso Perez Prado, the King of Mambo.
+Mambo was forbidden and frowned upon when it appeared. But people still found
+a way to enjoy it in closed environments. Just like this service.
 
 
 When or Why would this be useful?
