@@ -28,6 +28,7 @@
 
 - name: create the prod config file
   action: template src=../templates/prod.py.j2 dest={{ app_home }}/src/{{ app_name }}/configs/prod.py
+  notify: restart app
 
 - name: install python requirements in virtualenv
   pip:
