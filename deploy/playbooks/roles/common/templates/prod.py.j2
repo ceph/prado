@@ -49,11 +49,13 @@ delegate_downloads = False
 
 build_map = {
     "slave": {
-        "playbook": "%(confdir)s/public/ceph-build/ansible/slaves",
-        "template": "%(confdir)s/public/ceph-build/ansible/slaves/slave.yml.j2",
+        "playbook": "%(confdir)s/../public/ceph-build/ansible/slaves",
+        "template": "%(confdir)s/../public/ceph-build/ansible/slaves/slave.yml.j2",
         "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
     }
 }
+
+setup_ansible = '%(confdir)s/../public/ansible.tar.gz'
 
 # FIXME: we need a way to programatically know what IP/address we are serving
 # from
