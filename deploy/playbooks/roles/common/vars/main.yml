@@ -1,0 +1,26 @@
+---
+
+system_packages:
+  - python-devel
+  - git
+  - python-virtualenv
+  - mongodb-server
+  - gcc-c++
+  - gcc
+  # FIXME: make this postgresql thing optional
+  # only needed when doing postgres
+  #- postgresql
+  #- postgresql-libs
+  #- postgresql-devel
+  #- postgresql-server
+  - python-psycopg2
+  - nginx
+  - libsemanage-python
+
+ssl_requirements:
+  - openssl
+  - openssl-devel
+
+circus_system_packages:
+  - libzmq-dev
+  - libevent-dev

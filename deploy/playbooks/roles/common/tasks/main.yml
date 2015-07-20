@@ -1,0 +1,41 @@
+---
+
+- name: ensure a home for {{ app_name }}
+  sudo: yes
+  file: path={{ app_home }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} state=directory recurse=yes
+
+- name: install ssl system requirements
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items: ssl_requirements
+  when: app_use_ssl
+
+- name: enable EPEL
+  sudo: yes
+  yum: name=epel-release state=present
+
+- name: install system packages
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items: system_packages
+
+- name: Create a virtualenv with latest pip.
+  pip: name=pip virtualenv={{ app_home }} extra_args='--upgrade'
+
+- name: pip+git install {{ app_name }} into virtualenv.
+  pip: name='git+https://github.com/alfredodeza/{{ app_name }}#egg={{ app_name }}' virtualenv={{ app_home }}
+  changed_when: False
+
+- name: create the prod config file
+  action: template src=../templates/prod.py.j2 dest={{ app_home }}/src/{{ app_name }}/configs/prod.py
+
+- name: install python requirements in virtualenv
+  pip:
+    requirements: "{{ app_home }}/src/{{ app_name }}/requirements.txt"
+    state: present
+    virtualenv: "{{ app_home }}"
+  notify: restart app
+
+- include: circus.yml
+
+- include: nginx.yml
