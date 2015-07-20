@@ -43,12 +43,12 @@ logging = {
 }
 
 
-setup_ansible = '%(confdir)s/public/ansible.tar.gz'
+setup_ansible = '%(confdir)s/../public/ansible.tar.gz'
 
 build_map = {
     "slave": {
-        "playbook": "%(confdir)s/public/ceph-build/ansible/slaves",
-        "template": "%(confdir)s/public/ceph-build/ansible/slaves/slave.yml.j2",
+        "playbook": "%(confdir)s/../public/ceph-build/slaves",
+        "template": "%(confdir)s/../public/ceph-build/ansible/slave.yml.j2",
         "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
     }
 }
