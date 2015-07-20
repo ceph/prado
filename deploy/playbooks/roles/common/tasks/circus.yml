@@ -40,3 +40,6 @@
 - name: ensure circus is running
   sudo: true
   action: service name=circus state=started
+
+- name: ensure app is running
+  command: "{{ app_home }}/bin/circusctl start {{ app_name }}"
