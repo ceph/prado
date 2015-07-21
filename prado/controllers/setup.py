@@ -23,17 +23,22 @@ class SetupScriptController(object):
 
 class SetupController(object):
 
-    @expose(content_type='application/octet-stream', generic=True)
+    @expose('json')
     def index(self):
-        response.headers['Content-Disposition'] = 'attachment; filename=setup.sh'
-        f = open(conf.setup_script, 'rb')
-        response.app_iter = FileIter(f)
+        build_map = conf.build_map.to_dict()
+        return dict(
+            playbooks=build_map.keys()
+        )
 
     @expose(content_type='application/octet-stream', generic=True)
     def ansible(self):
         """
         Servers the pre-made ansible source to avoid installation of packages
         """
+        try:
+            conf.setup_ansible
+        except (AttributeError, KeyError):
+            abort(404, 'setup_ansible value is not configured')
         response.headers['Content-Disposition'] = 'attachment; filename=ansible.tar.gz'
         f = open(conf.setup_ansible, 'rb')
         response.app_iter = FileIter(f)
