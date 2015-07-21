@@ -96,3 +96,10 @@ the top level of the compressed directory so that the script has a reliable way
 to look for it. Since the script also changes directories to where the playbook
 files are, that means that the ``main.yml`` file will always need to be reached
 on the parent directory.
+
+custom modules
+--------------
+Custom Ansible modules are supported as long as they exist within the playbook
+in a ``library`` directory. When the playbook executes it will always append
+the full path to the playbook library directory (even if it doesn't exist) as
+a convenience feature.
