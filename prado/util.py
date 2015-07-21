@@ -66,8 +66,9 @@ tar xzf ansible.tar.gz
 curl -s -L -o playbook.tar.gz "$build_tar"
 tar xzf playbook.tar.gz
 cd playbook
+library = "`pwd`/library"
 
-bash ../build/bin/{command}
+ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library bash ../build/bin/{command}
 """
     script = StringIO()
     script.write(
