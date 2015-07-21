@@ -8,8 +8,8 @@ server = {
 
 # Pecan Application Configurations
 app = {
-    'root': '{{ app_name }}.controllers.root.RootController',
-    'modules': ['{{ app_name }}'],
+    'root': 'prado.controllers.root.RootController',
+    'modules': ['prado'],
     'debug': False,
     'hooks': [error.CustomErrorHook()],
 }
@@ -17,7 +17,7 @@ app = {
 logging = {
     'loggers': {
         'root': {'level': 'INFO', 'handlers': ['console']},
-        '{{ app_name }}': {'level': 'DEBUG', 'handlers': ['console']},
+        'prado': {'level': 'DEBUG', 'handlers': ['console']},
         'pecan.commands.serve': {'level': 'DEBUG', 'handlers': ['console']},
         'py.warnings': {'handlers': ['console']},
         '__force_dict__': True
@@ -51,11 +51,11 @@ build_map = {
     "slave": {
         "playbook": "%(confdir)s/../public/ceph-build/ansible",
         "template": "%(confdir)s/../public/ceph-build/ansible/slave.yml.j2",
-        "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
+        "command": 'ansible-playbook -i "localhost," -c local ../main.yml',
     }
 }
 
-setup_ansible = '%(confdir)s/../public/ansible.tar.gz'
+setup_ansible = '%(confdir)s/public/ansible.tar.gz'
 
 # FIXME: we need a way to programatically know what IP/address we are serving
 # from
