@@ -4,7 +4,8 @@ class TestSetupController(object):
 
     def test_configure_playbook(self, app):
         result = app.get('/setup/').json
-        assert result == {'playbooks': ['slave']}
+        playbooks = result['playbooks']
+        assert playbooks == ['novars', 'slave', 'vars']
 
     def test_get_ansible_tar(self, app):
         result = app.get('/setup/ansible/', expect_errors=True)
@@ -23,3 +24,7 @@ class TestSetupController(object):
     def test_configured_playbook(self, app):
         result = app.get('/setup/slave/')
         assert result.status_int == 200
+
+    def test_varargs(self, app):
+        result = app.get('/setup/vars/?node_description=Ubuntu Precise Slave x86_64 Build Server&nodename=precise&labels=amd64 precise-pbuild x86_64&token=7479f92lff630c7436318580de6f3e27')
+        assert result
