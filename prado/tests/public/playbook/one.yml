@@ -1,0 +1,4 @@
+--
+
+- name: some name with mako ${args}
+  action: some other ${param}

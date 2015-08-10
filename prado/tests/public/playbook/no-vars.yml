@@ -1,0 +1,4 @@
+--
+
+- name: some name with no mako args
+  action: some other text
