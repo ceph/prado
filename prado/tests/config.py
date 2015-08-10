@@ -52,6 +52,16 @@ build_map = {
         "playbook": "%(confdir)s/../public/ceph-build/ansible",
         "template": "%(confdir)s/../public/ceph-build/ansible/slave.yml.j2",
         "command": 'ansible-playbook -i "localhost," -c local ../main.yml',
+    },
+    "vars": {
+        "playbook": "%(confdir)s/../public/playbook",
+        "template": "%(confdir)s/../public/playbook/vars.yml",
+        "command": 'ansible-playbook -i "localhost," -c local ../main.yml',
+    },
+    "novars": {
+        "playbook": "%(confdir)s/../public/playbook",
+        "template": "%(confdir)s/../public/playbook/no-vars.yml",
+        "command": 'ansible-playbook -i "localhost," -c local ../main.yml',
     }
 }
 
