@@ -1,4 +1,5 @@
 import os
+from urllib import urlencode
 from StringIO import StringIO
 import tempfile
 import tarfile
@@ -40,11 +41,7 @@ def make_setup_script(name, **params):
     command = conf.build_map[name]['command']
     address = conf.service_address.strip('/')
     if params:
-        from urllib import quote
-        encoded = "?"+"&".join(
-            "%s=%s" % (key, quote(params[key], safe="+"))
-            for key in params.keys()
-        )
+        encoded = "?%s" % urlencode(params)
     else:
         encoded = ""
     bash = """#!/bin/bash -x -e
