@@ -59,7 +59,7 @@ config::
 
 Which would be reachable at::
 
-    public/slave/
+    setup/slave/
 
 And all query args would be passed onto the template file.
 
