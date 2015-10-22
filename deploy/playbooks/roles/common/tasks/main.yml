@@ -30,6 +30,13 @@
   action: template src=../templates/prod.py.j2 dest={{ app_home }}/src/{{ app_name }}/configs/prod.py
   notify: restart app
 
+- name: clone ceph-build into prado/public
+  git:
+    repo: "https://github.com/ceph/ceph-build.git"
+    dest: "{{ app_home }}/src/{{ app_name }}/public/ceph-build"
+    version: master
+    update: yes
+
 - name: install python requirements in virtualenv
   pip:
     requirements: "{{ app_home }}/src/{{ app_name }}/requirements.txt"
