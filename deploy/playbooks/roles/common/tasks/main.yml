@@ -33,14 +33,14 @@
 # stay consistent
 - name: generate pseudo-random password for basic http auth
   shell: python -c "exec 'import os; print os.urandom(30).encode(\'base64\')[:${length}]'"
-  register: api_password
+  register: api_key_generated
   changed_when: false
 
 - name: create the prod api credentials file
   template:
     src: prod_api_creds.py.j2
     dest: "{{ app_home }}/src/{{ app_name }}/prod_api_creds.py"
-  when: (api_password is defined or api_user is defined) or
+  when: (api_key is defined or api_user is defined) or
         (app_home_created is defined and app_home_created|changed)
 
 
