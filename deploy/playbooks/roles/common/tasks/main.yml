@@ -64,4 +64,10 @@
 
 - include: circus.yml
 
+# nginx sets an selinux boolean setting, which requires that selinux be
+# "enforcing" or "permissive", not "disabled".
+- name: set selinux to permissive
+  selinux:
+    state: permissive
+
 - include: nginx.yml
