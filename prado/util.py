@@ -69,11 +69,11 @@ mkdir $build_dir
 cd $build_dir
 
 # retrieve the pre-made ansible source and untar
-curl -s -L -o ansible.tar.gz "$ansible_tar"
+curl -u {user}:{key} -s -L -o ansible.tar.gz "$ansible_tar"
 tar xzf ansible.tar.gz
 
 # retrieve the source for this build
-curl -s -L -o playbook.tar.gz "$build_tar"
+curl -u {user}:{key} -s -L -o playbook.tar.gz "$build_tar"
 tar xzf playbook.tar.gz
 cd playbook
 library="`pwd`/library"
@@ -86,7 +86,9 @@ ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library bash ../build/bin/{command}
             address=address,
             command=command,
             name=name,
-            encoded=encoded
+            encoded=encoded,
+            user=conf.api_user,
+            key=conf.api_key,
         )
     )
     script.seek(0)
