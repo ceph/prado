@@ -1,6 +1,8 @@
 from pecan import expose, response, redirect, conf, abort
+from pecan.secure import secure
 from webob.static import FileIter
 from prado.util import make_setup_script
+from prado.auth import basic_auth
 
 
 class SetupScriptController(object):
@@ -8,6 +10,7 @@ class SetupScriptController(object):
     def __init__(self, name):
         self.name = name
 
+    @secure(basic_auth)
     @expose(content_type='application/octet-stream')
     def index(self, **kw):
         try:
@@ -30,6 +33,7 @@ class SetupController(object):
             playbooks=build_map.keys()
         )
 
+    @secure(basic_auth)
     @expose(content_type='application/octet-stream', generic=True)
     def ansible(self):
         """
