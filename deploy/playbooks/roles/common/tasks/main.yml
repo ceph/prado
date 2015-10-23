@@ -3,6 +3,7 @@
 - name: ensure a home for {{ app_name }}
   sudo: yes
   file: path={{ app_home }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} state=directory recurse=yes
+  register: app_home_created
 
 - name: install ssl system requirements
   sudo: yes
@@ -25,6 +26,23 @@
 - name: pip+git install {{ app_name }} into virtualenv.
   pip: name='git+https://github.com/alfredodeza/{{ app_name }}#egg={{ app_name }}' virtualenv={{ app_home }}
   changed_when: False
+
+# this will only be used if the credentials where not passed in explicitly over
+# the command line as --extra-vars and the app_home directory was not created
+# (as in a new deployment). Once the app is deployed once, the api/pass should
+# stay consistent
+- name: generate pseudo-random password for basic http auth
+  shell: python -c "exec 'import os; print os.urandom(30).encode(\'base64\')[:${length}]'"
+  register: api_password
+  changed_when: false
+
+- name: create the prod api credentials file
+  template:
+    src: prod_api_creds.py.j2
+    dest: "{{ app_home }}/src/{{ app_name }}/prod_api_creds.py"
+  when: (api_password is defined or api_user is defined) or
+        (app_home_created is defined and app_home_created|changed)
+
 
 - name: create the prod config file
   action: template src=../templates/prod.py.j2 dest={{ app_home }}/src/{{ app_name }}/configs/prod.py
