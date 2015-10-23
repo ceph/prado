@@ -56,3 +56,7 @@ build_map = {
 # if we are getting proxied by say, NGINX we can't use the server port and
 # address for the app itself so this needs to be defined again here
 service_address = 'http://localhost:8080'
+
+# these are used to access the service, via Basic HTTP Auth
+api_user = 'admin'
+api_key = 'secret'
