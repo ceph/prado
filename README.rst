@@ -1,5 +1,7 @@
 ``prado``
 ==========
+Bootstrap Ansible and a playbook with variables.
+
 Is a web service that provides a full installation of Ansible over HTTP with
 the ability to understand query arguments as playbook variables so that the
 playbook to be served will be exactly what a host needs when executing.
