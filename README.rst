@@ -2,9 +2,10 @@
 ==========
 Bootstrap Ansible and a playbook with variables.
 
-Is a web service that provides a full installation of Ansible over HTTP with
-the ability to understand query arguments as playbook variables so that the
-playbook to be served will be exactly what a host needs when executing.
+prado is a web service that provides a full installation of Ansible and
+its dependencies over HTTP, with the ability to understand query arguments
+as playbook variables so that the playbook to be served will be exactly
+what a host needs when executing.
 
 An example call to the webservice by the host would look like::
 
@@ -45,8 +46,7 @@ work.
 
 configuring playbooks
 =====================
-Map configured named playbooks to actual requests so that builds can
-specify via this endpoint what is it that they need.
+The prado service maps configured, named playbooks to service endpoints.
 
 For example, a build for a Jenkins slave might look like this in a Pecan
 config::
@@ -63,18 +63,18 @@ Which would be reachable at::
 
     setup/slave/
 
-And all query args would be passed onto the template file.
+and all HTTP query args would be passed onto the template file.
 
 templating
 ----------
-To avoid collition with Ansible's support for Jinja2, templates for playbooks
+To avoid collision with Ansible's support for Jinja2, templates for playbooks
 use Mako (http://www.makotemplates.org/).
 
 A simple debug message in a playbook template that looks like::
 
     - debug: msg="this is a message where ${foo} and ${meh} should be defined"
 
-Would get rendered and ready to execute when passing the variables to the
+would get rendered and ready to execute when passing the variables to the
 configured endpoint (using 'slave' here as an example)::
 
     http://0.0.0.0:8000/setup/slave/?foo=1&meh=2
@@ -85,19 +85,19 @@ Output of the playbook would show::
 
 command
 -------
-When defining commands, since ansible would be running to the local host it is
-recommended to use ``-i "localhost," -c local`` to ensure that ansible will use
-local connections and run on localhost only.
+When defining commands, since ansible will actually run on the
+target host, you should use ``-i "localhost," -c local`` to
+ensure that ansible will use local connections and run on localhost only.
 
-In the example command a ``main.yml`` file is used::
+The example above shows ``main.yml``::
 
     "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
 
-This is a convention where templates get renamed to ``main.yml`` and added to
-the top level of the compressed directory so that the script has a reliable way
-to look for it. Since the script also changes directories to where the playbook
-files are, that means that the ``main.yml`` file will always need to be reached
-on the parent directory.
+Also note: when the template playbook is expanded, the output is named
+``main.yml`` and added to the top level of the compressed directory so
+that the script has a reliable way to find it. Since the script also
+changes directories to where the playbook files are, that means that the
+``main.yml`` file will always need to be reached on the parent directory.
 
 custom modules
 --------------
