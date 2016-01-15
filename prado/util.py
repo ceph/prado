@@ -45,18 +45,11 @@ def make_setup_script(name, **params):
     else:
         encoded = ""
     bash = """#!/bin/bash -x -e
-# Make sure we can sudo without a prompt:
-# create the ssh key and slap it into authorized_keys
-# so we can ssh into localhost
-echo "--> generating ssh keys"
-echo -e  "y\\n" | ssh-keygen -q -t rsa -N "" -f ~/.ssh/id_rsa
-
-echo "--> copying local public key into authorized_keys"
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-
-echo "--> allocating pseudo tty with ssh to fix sudoers"
+# Do not use sudo for any commands as this script is ran
+# by root.
+echo "--> do not requiretty for sudoers"
 # now allocate a pseudo tty with ssh and fix sudoers
-ssh -n -t -t -o 'StrictHostKeyChecking=no' localhost 'sudo sed -i "s/Defaults    requiretty/#Defaults    requiretty/" /etc/sudoers' &
+sed -i "s/Defaults    requiretty/#Defaults    requiretty/" /etc/sudoers
 
 echo "--> getting ready to fetch ansible"
 build_tar="{address}/build/{name}{encoded}"
