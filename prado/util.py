@@ -1,4 +1,5 @@
 import os
+import json
 from urllib import urlencode
 from StringIO import StringIO
 import tempfile
@@ -41,9 +42,7 @@ def make_setup_script(name, **params):
     command = conf.build_map[name]['command']
     address = conf.service_address.strip('/')
     if params:
-        encoded = "?%s" % urlencode(params)
-    else:
-        encoded = ""
+        command = "{} --extra-vars {}".format(command, json.dumps(params))
     bash = """#!/bin/bash -x -e
 # Do not use sudo for any commands as this script is ran
 # by root.
@@ -52,7 +51,7 @@ echo "--> do not requiretty for sudoers"
 sed -i "s/Defaults    requiretty/#Defaults    requiretty/" /etc/sudoers
 
 echo "--> getting ready to fetch ansible"
-build_tar="{address}/build/{name}{encoded}"
+build_tar="{address}/build/{name}"
 ansible_tar="{address}/setup/ansible/"
 
 # Define and create a temporary directory for this build
@@ -79,7 +78,6 @@ ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library bash ../build/bin/{command}
             address=address,
             command=command,
             name=name,
-            encoded=encoded,
             user=conf.api_user,
             key=conf.api_key,
         )
