@@ -53,8 +53,8 @@ config::
 
     build_map = {
         "slave": {
-            "playbook": "%(confdir)s/public/ceph-build/ansible/slaves",
-            "template": "%(confdir)s/public/ceph-build/ansible/slaves/slave.yml.j2",
+            "playbook_path": "%(confdir)s/public/ceph-build/ansible/slaves",
+            "playbook": "%(confdir)s/public/ceph-build/ansible/slaves/slave.yml",
             "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
         }
     }
@@ -64,24 +64,6 @@ Which would be reachable at::
     setup/slave/
 
 and all HTTP query args would be passed onto the template file.
-
-templating
-----------
-To avoid collision with Ansible's support for Jinja2, templates for playbooks
-use Mako (http://www.makotemplates.org/).
-
-A simple debug message in a playbook template that looks like::
-
-    - debug: msg="this is a message where ${foo} and ${meh} should be defined"
-
-would get rendered and ready to execute when passing the variables to the
-configured endpoint (using 'slave' here as an example)::
-
-    http://0.0.0.0:8000/setup/slave/?foo=1&meh=2
-
-Output of the playbook would show::
-
-    TASK: [debug msg="this is a message where 1 and 2 should be defined"] *******
 
 command
 -------
