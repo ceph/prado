@@ -1,5 +1,8 @@
 import os
 import tempfile
+
+from shutil import copyfile
+
 from pecan import expose, response, conf, abort
 from pecan.secure import secure
 from webob.static import FileIter
@@ -20,16 +23,14 @@ class BuildController(object):
         except (AttributeError, KeyError):
             abort(404)
 
-        template = conf.build_map[self.name]['template']
         playbook = conf.build_map[self.name]['playbook']
+        playbook_path = conf.build_map[self.name]['playbook_path']
 
         files_to_compress = []
-        rendered_yml = render(template, **kw)
         tmp_dir = tempfile.mkdtemp()
         yml_file = os.path.join(tmp_dir, 'main.yml')
-        with open(yml_file, 'w') as f:
-            f.write(rendered_yml)
-        files_to_compress.append(playbook)
+        copyfile(playbook, yml_file)
+        files_to_compress.append(playbook_path)
         files_to_compress.append(yml_file)
 
         playbook = tar_czf(files_to_compress)
