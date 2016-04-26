@@ -9,7 +9,7 @@ what a host needs when executing.
 
 An example call to the webservice by the host would look like::
 
-    curl -L http://prado.example/setup/myplaybook/ | bash
+    curl -u api_user:api_key -L "http://prado.example/setup/myplaybook/?foo=bar&bar=baz" | bash
 
 project name
 ------------
