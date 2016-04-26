@@ -42,7 +42,7 @@ def make_setup_script(name, **params):
     command = conf.build_map[name]['command']
     address = conf.service_address.strip('/')
     if params:
-        command = "{} --extra-vars {}".format(command, json.dumps(params))
+        command = "{} --extra-vars '{}'".format(command, json.dumps(params))
     bash = """#!/bin/bash -x -e
 # Do not use sudo for any commands as this script is ran
 # by root.
