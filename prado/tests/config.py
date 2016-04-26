@@ -70,3 +70,6 @@ setup_ansible = '%(confdir)s/public/ansible.tar.gz'
 # FIXME: we need a way to programatically know what IP/address we are serving
 # from
 service_address = 'http://172.18.181.11'
+
+api_user = "user"
+api_key = "key"
