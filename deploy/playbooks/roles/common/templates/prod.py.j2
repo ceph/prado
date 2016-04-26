@@ -52,7 +52,7 @@ delegate_downloads = False
 build_map = {
     "slave": {
         "playbook_path": "%(confdir)s/../public/ceph-build/ansible",
-        "playbook": "%(confdir)s/../public/ceph-build/ansible/slave.yml.j2",
+        "playbook": "%(confdir)s/../public/ceph-build/ansible/slave.yml",
         "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
     }
 }
