@@ -9,11 +9,11 @@ class TestSetupController(object):
 
     def test_get_ansible_tar(self, app):
         result = app.get('/setup/ansible/', expect_errors=True)
-        assert result.status_int == 204
+        assert result.status_int == 200
 
     def test_get_ansible_tar_not_configured(self, app):
         from pecan.configuration import set_config
-        set_config({}, overwrite=True)
+        set_config({"api_user": "user", "api_key": "key"}, overwrite=True)
         result = app.get('/setup/ansible/', expect_errors=True)
         assert result.status_int == 404
 
