@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  user: vagrant 
+  roles:
+    - common
+  vars:
+     app_name: "prado"
+     branch: "master"
+     use_ssl: true
+     wsgi_file: wsgi.py
+     wsgi_callable: application
