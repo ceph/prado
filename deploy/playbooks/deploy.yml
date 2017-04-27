@@ -11,3 +11,8 @@
      use_ssl: true
      wsgi_file: wsgi.py
      wsgi_callable: application
+  vars_prompt:
+     - name: "jenkins_build_private_key_path"
+       prompt: "Enter the path to the jenkins_build private ssh key. If not provided this step will be skipped."
+       default: false
+       private: no

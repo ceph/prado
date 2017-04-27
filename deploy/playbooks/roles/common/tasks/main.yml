@@ -57,6 +57,12 @@
     version: master
     update: yes
 
+- name: upload the jenkins_build ssh private key
+  template:
+    src: "{{ jenkins_build_private_key_path }}"
+    dest: "{{ app_home }}/src/{{ app_name }}/public/ceph-build/ansible/files/ssh/keys/jenkins_build"
+  when: jenkins_build_private_key_path
+
 - name: install python requirements in virtualenv
   pip:
     requirements: "{{ app_home }}/src/{{ app_name }}/requirements.txt"
