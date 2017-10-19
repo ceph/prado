@@ -7,8 +7,9 @@ import tarfile
 
 markupsafe="https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz#md5=f5ab3deee4c37cd6a922fb81e730da6e"
 jinja2="https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz#md5=b9dffd2f3b43d673802fe857c8445b1a"
-ansible="https://pypi.python.org/packages/source/a/ansible/ansible-1.9.1.tar.gz#md5=3c0f0ecc8b5d60831b10045dba64bbbb"
+ansible="https://releases.ansible.com/ansible/ansible-2.3.1.0.tar.gz"
 pyyaml="https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz#md5=f50e08ef0fe55178479d3a618efe21db"
+pycrypto="https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz#md5=55a61a054aa66812daf5161a0d5d7eda"
 six="https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz#md5=476881ef4012262dfc8adc645ee786c4"
 
 cwd = os.path.abspath(os.path.dirname(__file__))
@@ -125,6 +126,16 @@ def setup_pyyaml():
     cp(library_path, destination)
 
 
+def setup_pycrypto():
+    log('*'*40+' setting up pycrypto ' + '*'*40)
+    save_as = os.path.join(sources_dir, 'pycrypto.tar.gz')
+    wget(pycrypto, save_as)
+    extracted_path = tar_xzf(save_as)
+    library_path = os.path.join(extracted_path, 'lib/Crypto')
+    destination = os.path.join(build_dir, 'ansible/lib/Crypto')
+    cp(library_path, destination)
+
+
 def setup_six():
     log('*'*40+' setting up six ' + '*'*40)
     save_as = os.path.join(sources_dir, 'six.tar.gz')
@@ -142,6 +153,7 @@ def main():
     setup_markupsafe()
     setup_jinja2()
     setup_pyyaml()
+    setup_pycrypto()
     setup_six()
     cp(
         os.path.join(top_level_dir, 'bin'),
