@@ -1,4 +1,5 @@
 ---
+## Example for re-deploying existing instance: ansible-playbook deploy.yml --limit="prado.ceph.com" -e api_user=admin -e api_key=XXXXX
 
 - hosts: all
   user: admin
