@@ -41,6 +41,7 @@
   pip:
     name: 'git+https://github.com/ceph/{{ app_name }}@{{ branch }}#egg={{ app_name }}'
     virtualenv: "{{ app_home }}"
+    state: latest
   changed_when: False
 
 # this will only be used if the credentials where not passed in explicitly over
