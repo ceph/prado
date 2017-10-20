@@ -1,30 +1,46 @@
 ---
 
-- name: ensure a home for {{ app_name }}
-  sudo: yes
-  file: path={{ app_home }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} state=directory recurse=yes
+- name: "ensure a home for {{ app_name }}"
+  become: true
+  file:
+    path: "{{ app_home }}"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    state: directory
+    recurse: yes
   register: app_home_created
 
 - name: install ssl system requirements
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items: ssl_requirements
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ ssl_requirements }}"
   when: app_use_ssl
 
 - name: enable EPEL
-  sudo: yes
-  yum: name=epel-release state=present
+  become: true
+  yum:
+    name: epel-release
+    state: present
 
 - name: install system packages
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items: system_packages
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ system_packages }}"
 
 - name: Create a virtualenv with latest pip.
-  pip: name=pip virtualenv={{ app_home }} extra_args='--upgrade'
+  pip:
+    name: pip
+    virtualenv: "{{ app_home }}"
+    extra_args: '--upgrade'
 
-- name: pip+git install {{ app_name }} into virtualenv.
-  pip: name='git+https://github.com/alfredodeza/{{ app_name }}@{{ branch }}#egg={{ app_name }}' virtualenv={{ app_home }}
+- name: "pip+git install {{ app_name }} into virtualenv"
+  pip:
+    name: 'git+https://github.com/ceph/{{ app_name }}@{{ branch }}#egg={{ app_name }}'
+    virtualenv: "{{ app_home }}"
   changed_when: False
 
 # this will only be used if the credentials where not passed in explicitly over
@@ -35,6 +51,7 @@
   shell: python -c "exec 'import os; print os.urandom(30).encode(\'base64\')[:${length}]'"
   register: api_key_generated
   changed_when: false
+  when: (api_key is not defined) and (api_user is not defined)
 
 - name: create the prod api credentials file
   template:
@@ -45,9 +62,10 @@
         (reset_key is defined)
   notify: restart app
 
-
 - name: create the prod config file
-  action: template src=../templates/prod.py.j2 dest={{ app_home }}/src/{{ app_name }}/configs/prod.py
+  template:
+    src: prod.py.j2
+    dest: "{{ app_home }}/src/{{ app_name }}/configs/prod.py"
   notify: restart app
 
 - name: clone ceph-build into prado/public
@@ -56,6 +74,7 @@
     dest: "{{ app_home }}/src/{{ app_name }}/public/ceph-build"
     version: master
     update: yes
+    force: yes
 
 - name: install python requirements in virtualenv
   pip:

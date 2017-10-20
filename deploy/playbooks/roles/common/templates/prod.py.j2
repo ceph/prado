@@ -54,6 +54,16 @@ build_map = {
         "playbook_path": "%(confdir)s/../public/ceph-build/ansible",
         "playbook": "%(confdir)s/../public/ceph-build/ansible/slave.yml",
         "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
+    },
+    "slave_libvirt": {
+        "playbook_path": "%(confdir)s/../public/ceph-build/ansible",
+        "playbook": "%(confdir)s/../public/ceph-build/ansible/slave_libvirt.yml",
+        "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
+    },
+    "slave_jnlp": {
+        "playbook_path": "%(confdir)s/../public/ceph-build/ansible",
+        "playbook": "%(confdir)s/../public/ceph-build/ansible/slave_jnlp.yml",
+        "command": 'ansible-playbook -i "localhost," -c local ../main.yml'
     }
 }
 
