@@ -87,3 +87,17 @@ Custom Ansible modules are supported as long as they exist within the playbook
 in a ``library`` directory. When the playbook executes it will always append
 the full path to the playbook library directory (even if it doesn't exist) as
 a convenience feature.
+
+updating ansible
+================
+Prado ships a pre-built tarball with ansible binaries and dependencies.  
+Creating that tarball with a newer ansible version requires some human 
+interaction.
+
+#. Update the ansible tarball location in ``scripts/build.py``
+#. ``cd scripts``
+#. ``python build.py --force``
+#. ``cd ../``
+#. Check to make sure the version is updated: ``bash build/bin/ansible --version``
+#. ``tar zcvf public/ansible.tar.gz build``
+#. ``git add`` the new tarball and create a PR
