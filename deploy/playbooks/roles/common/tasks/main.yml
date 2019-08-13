@@ -94,3 +94,4 @@
     state: permissive
 
 - include: nginx.yml
+  tags: nginx
