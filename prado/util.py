@@ -1,7 +1,7 @@
 import os
 import json
 from urllib.parse import urlencode
-from io import StringIO
+from io import StringIO, BytesIO
 import tempfile
 import tarfile
 from pecan import conf
@@ -72,7 +72,7 @@ library="`pwd`/library"
 
 ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library bash ../build/bin/{command}
 """
-    script = StringIO()
+    script = BytesIO()
     script.write(
         bash.format(
             address=address,
@@ -80,7 +80,7 @@ ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library bash ../build/bin/{command}
             name=name,
             user=conf.api_user,
             key=conf.api_key,
-        )
+        ).encode('utf-8')
     )
     script.seek(0)
     return script
