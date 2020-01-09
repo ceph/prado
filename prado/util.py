@@ -1,7 +1,7 @@
 import os
 import json
-from urllib import urlencode
-from StringIO import StringIO
+from urllib.parse import urlencode
+from io import StringIO
 import tempfile
 import tarfile
 from pecan import conf
