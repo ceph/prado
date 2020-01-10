@@ -30,7 +30,7 @@ class SetupController(object):
     def index(self):
         build_map = conf.build_map.to_dict()
         return dict(
-            playbooks=build_map.keys()
+            playbooks=[i for i in build_map.keys()]
         )
 
     @secure(basic_auth)
