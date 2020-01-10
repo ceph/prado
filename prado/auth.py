@@ -11,9 +11,8 @@ def basic_auth():
 
         assert username == conf.api_user
         assert password == conf.api_key
-    except:
+    except Exception:
         response.headers['WWW-Authenticate'] = 'Basic realm="Prado :: Binary API"'
         abort(401)
 
     return True
-
