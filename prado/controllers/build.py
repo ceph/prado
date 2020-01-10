@@ -6,7 +6,7 @@ from shutil import copyfile
 from pecan import expose, response, conf, abort
 from pecan.secure import secure
 from webob.static import FileIter
-from prado.util import render, tar_czf
+from prado.util import tar_czf
 from prado.auth import basic_auth
 
 

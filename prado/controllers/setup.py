@@ -1,4 +1,4 @@
-from pecan import expose, response, redirect, conf, abort
+from pecan import expose, response, conf, abort
 from pecan.secure import secure
 from webob.static import FileIter
 from prado.util import make_setup_script
