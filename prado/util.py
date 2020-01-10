@@ -60,17 +60,13 @@ build_dir="prado_$timestamp"
 mkdir $build_dir
 cd $build_dir
 
-# retrieve the pre-made ansible source and untar
-curl -u {user}:{key} -s -L -o ansible.tar.gz "$ansible_tar"
-tar xzf ansible.tar.gz
-
 # retrieve the source for this build
 curl -u {user}:{key} -s -L -o playbook.tar.gz "$build_tar"
 tar xzf playbook.tar.gz
 cd playbook
 library="`pwd`/library"
 
-ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library bash ../build/bin/{command}
+ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$library {command}
 """
     script = StringIO()
     script.write(
