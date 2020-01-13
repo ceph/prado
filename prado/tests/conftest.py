@@ -15,6 +15,16 @@ def config_file():
     return os.path.join(here, 'config.py')
 
 
+@pytest.fixture
+def b_(request):
+    """
+    Useful for assertions as everything in the body is now bytes
+    """
+    def func(s):
+        return s.encode("utf-8")
+    return func
+
+
 @pytest.fixture(scope='function')
 def app(request):
     _config = configuration.conf_from_file(config_file()).to_dict()
